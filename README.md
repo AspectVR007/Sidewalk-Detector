@@ -12,3 +12,12 @@ So how the algorithm works is going through every little detail of your plan or 
 Running this project:
 You can download the code off of GitHub and use it in vs code or python related stuff. You run it, choose an option and boom that's it. It's simple but it works well.
 Nothing else needed
+
+
+
+
+https://github.com/user-attachments/assets/c116f3f7-a014-413c-bcec-d22888533689
+
+
+
+https://github.com/user-attachments/assets/930379ce-62b3-4cb2-a680-73b52d2832dc
