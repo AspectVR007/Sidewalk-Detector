@@ -4,7 +4,7 @@ This project is when you put in an image of a sidewalk it will detect if it is a
 
 
 The Algorithm:
-It scans the image and then confirms if it is a sidewalk or not.
+It scans the image and then confirms if it is a sidewalk or not. Just follow what I do in the video because the camera portion of it was never figured out but I will update it later.
 
 
 
