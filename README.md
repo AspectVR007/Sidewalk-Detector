@@ -51,10 +51,3 @@ python3 /opt/jetson-inference/python/examples/imagenet.py \
 
 
 
-
-
-
-https://github.com/user-attachments/assets/79b54fd6-088d-47a2-9fc2-ef34678a3ae3
-
-
-
