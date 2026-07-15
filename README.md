@@ -1,23 +1,21 @@
 Personal Assistant:
-This project is for people who have trouble planning such as myself. It plans out your list for you, you supply the machine with whatever you have to do that day, and it generates a day planner with those items.
+This project is when you put in an image of a sidewalk it will detect if it is a sidewalk or not.
 
 
 
 The Algorithm:
-The algorithm goes through every detail of your plan. The code goes through certain loops and keeps going until you quit. I'm not good at explaining or planning which is why i need this project.
+It scans the image and then confirms if it is a sidewalk or not.
 
 
 
 
 Running this project:
-You can download the code off of GitHub and use it in Vscode or python related. You run it, choose an option. It's simple but it works well.
+You can download the code off of GitHub and use it in Vscode or anything python related. You run it, put an image in, and it will tell you if it is a sidewalk or not.
 Nothing else needed
 
 
 
 
-https://github.com/user-attachments/assets/c116f3f7-a014-413c-bcec-d22888533689
+https://github.com/user-attachments/assets/fd1ad186-b6ea-44d7-a08d-6524a0983f1b
 
 
-
-https://github.com/user-attachments/assets/930379ce-62b3-4cb2-a680-73b52d2832dc
