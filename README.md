@@ -16,6 +16,19 @@ Nothing else needed
 
 
 
-https://github.com/user-attachments/assets/fd1ad186-b6ea-44d7-a08d-6524a0983f1b
+These are the certain command you need for it:
 
+
+
+
+
+This is the command for it. It shows a complete random image of either a sidewalk or a road.
+
+IMG=$(find data/sidewalks/test -name "*.jpg" | shuf -n 1) && \
+echo "Testing: $IMG" && \
+python3 /opt/jetson-inference/python/examples/imagenet.py \
+--model=models/sidewalk/resnet18.onnx \
+--input_blob=input_0 --output_blob=output_0 \
+--labels=data/sidewalks/labels.txt \
+"$IMG" output.jpg 2>&1 | grep -iE "testing|class #"
 
