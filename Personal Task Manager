@@ -1,0 +1,108 @@
+Here is the code for it.
+--------------------------------------------------
+import json
+import os
+from datetime import datetime
+from pathlib import Path
+
+TASKS_FILE = Path(__file__).parent / "tasks.json"
+ENV_FILE = Path(__file__).parent / ".env"
+
+
+# ---------Task Manager-----------
+
+def load_tasks():
+    if TASKS_FILE.exists():
+        with open(TASKS_FILE, "r") as f:
+            return json.load(f)
+    return []
+    
+
+def save_tasks(tasks):
+    with open(TASKS_FILE, "w")as f:
+        json.dump(tasks, f, indent=2)
+
+def add_task(tasks):
+    text = input("Task description:").strip()
+    if not text:
+        print("Empty task, skipped.")
+        return
+    tasks.append({
+        "text": text,
+        "done": False,
+        "created":
+    datetime.now().strftime("%Y-%m-%d %H:" \
+    "%M"),
+    })
+    save_tasks(tasks)
+    print("Added.")
+
+
+def list_tasks(tasks):
+    if not tasks:
+        print("No tasks yet.")
+        return
+    for i, t in enumerate(tasks, 1):
+        status = "x" if t["done"] else " "
+        print(f"[{status}] {i}. {t['text']} (added {t['created']})")
+
+
+def complete_task(tasks):
+    list_tasks(tasks)
+    if not tasks:
+        return
+    try:
+        idx = int(input("Task number to mark done: ")) - 1
+        tasks[idx]["done"] = True
+        save_tasks(tasks)
+        print("Marked done.")
+    except (ValueError, IndexError):
+        print("Invalid task number.")
+
+
+def delete_task(tasks):
+    list_tasks(tasks)
+    if not tasks:
+        return
+    try:
+        idx = int(input("Task number to delete:")) - 1
+        removed = tasks.pop(idx)
+        save_tasks(tasks)
+        print(f"Deleted: {removed['text']}")
+    except (ValueError, IndexError):
+        print("Invalid task number.")
+
+#-------------Main Menu------------------
+
+def main():
+    tasks = load_tasks()
+
+    menu = """
+=== Personal Assistant === 
+1. Add Task
+2. List tasks
+3. Mark task done
+4. Delete task
+5. Quit
+"""
+    while True:
+        print(menu)
+        choice = input("Choose an option:").strip()
+
+        if choice == "1":
+            add_task(tasks)
+        elif choice == "2":
+            list_tasks(tasks)
+        elif choice == "3":
+            complete_task(tasks)
+        elif choice == "4":
+            delete_task(tasks)
+        elif choice == "5":
+            print("Goodbye!")
+        break
+    else:
+        print("Invalid choice, try again.")
+
+
+if __name__ == "__main__":
+ main()
