@@ -16,13 +16,30 @@ Nothing else needed
 
 
 
-These are the certain command you need for it:
+These are the certain commands you need for it:
+
+
+This is the command for the sidewalk: python3 /opt/jetson-inference/python/examples/imagenet.py \
+--model=models/sidewalk/resnet18.onnx \
+--input_blob=input_0 --output_blob=output_0 \
+--labels=data/sidewalks/labels.txt \
+data/sidewalks/test/sidewalk/sidewalk_00034.jpg output.jpg 2>&1 | grep -i "class #"
+
+
+
+
+This is the command for something that isnt a sidewalk: python3 /opt/jetson-inference/python/examples/imagenet.py \
+--model=models/sidewalk/resnet18.onnx \
+--input_blob=input_0 --output_blob=output_0 \
+--labels=data/sidewalks/labels.txt \
+data/sidewalks/test/not_sidewalk/not_sidewalk_00000.jpg output2.jpg 2>&1 | grep -i "class #"
 
 
 
 
 
-This is the command for it. It shows a complete random image of either a sidewalk or a road.
+
+This is the command for a random image. It shows a complete random image of either a sidewalk or a road.
 
 IMG=$(find data/sidewalks/test -name "*.jpg" | shuf -n 1) && \
 echo "Testing: $IMG" && \
@@ -31,4 +48,13 @@ python3 /opt/jetson-inference/python/examples/imagenet.py \
 --input_blob=input_0 --output_blob=output_0 \
 --labels=data/sidewalks/labels.txt \
 "$IMG" output.jpg 2>&1 | grep -iE "testing|class #"
+
+
+
+
+
+
+https://github.com/user-attachments/assets/79b54fd6-088d-47a2-9fc2-ef34678a3ae3
+
+
 
