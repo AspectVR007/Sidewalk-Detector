@@ -50,4 +50,3 @@ python3 /opt/jetson-inference/python/examples/imagenet.py \
 "$IMG" output.jpg 2>&1 | grep -iE "testing|class #"
 
 
-
