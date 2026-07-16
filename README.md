@@ -1,22 +1,22 @@
-Personal Assistant:
+# Sidewalk Detector:
 This project is when you put in an image of a sidewalk it will detect if it is a sidewalk or not.
 
 
 
-The Algorithm:
+# The Algorithm:
 It scans the image and then confirms if it is a sidewalk or not. Just follow what I do in the video because the camera portion of it was never figured out but I will update it later.
 
 
 
 
-Running this project:
+# Running this project:
 You can download the code off of GitHub and use it in Vscode or anything python related. You run it, put an image in, and it will tell you if it is a sidewalk or not.
 Nothing else needed
 
 
 
 
-These are the certain commands you need for it:
+# These are the certain commands you need for it:
 
 
 This is the command for the sidewalk: python3 /opt/jetson-inference/python/examples/imagenet.py \
@@ -50,3 +50,15 @@ python3 /opt/jetson-inference/python/examples/imagenet.py \
 "$IMG" output.jpg 2>&1 | grep -iE "testing|class #"
 
 
+
+<img width="453" height="42" alt="image" src="https://github.com/user-attachments/assets/63202138-74ad-44d8-af4e-b2ed4ebdea88" />
+
+
+
+
+
+
+# Video of it working.
+
+
+https://youtu.be/bPswn_NmM44
