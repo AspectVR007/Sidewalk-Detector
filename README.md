@@ -54,6 +54,7 @@ python3 /opt/jetson-inference/python/examples/imagenet.py \
 <img width="453" height="42" alt="image" src="https://github.com/user-attachments/assets/63202138-74ad-44d8-af4e-b2ed4ebdea88" />
 
 
+<img width="366" height="30" alt="image" src="https://github.com/user-attachments/assets/f51b24ad-6c2e-4bfd-8d20-0eb1c39d9dd5" />
 
 
 
