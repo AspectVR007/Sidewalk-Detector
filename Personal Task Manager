@@ -1,108 +1,72 @@
 Here is the code for it.
 --------------------------------------------------
-import json
+"""
+Splits raw image folders into train/val/test structure for jetson-inference classification training.
+"""
+
 import os
-from datetime import datetime
-from pathlib import Path
+import random
+import shutil
 
-TASKS_FILE = Path(__file__).parent / "tasks.json"
-ENV_FILE = Path(__file__).parent / ".env"
+random.seed(42)
 
+SIDEWALK_SRC = "images_v2"
+NOT_SIDEWALK_SRC = "raw_not_sidewalk"
 
-# ---------Task Manager-----------
+SPLIT = {"train": 0.8, "val": 0.1, "test": 0.1}
 
-def load_tasks():
-    if TASKS_FILE.exists():
-        with open(TASKS_FILE, "r") as f:
-            return json.load(f)
-    return []
-    
+def find_images(folder):
+    exts = (".jpg", ".jpeg", ".png")
+    paths = []
+    for root, _, files in os.walk(folder):
+        for f in files:
+            if f.lower().endswith(exts):
+                paths.append(os.path.join(root, f))
+    return paths
 
-def save_tasks(tasks):
-    with open(TASKS_FILE, "w")as f:
-        json.dump(tasks, f, indent=2)
+def split_and_copy(paths, class_name):
+    random.shuffle(paths)
+    n = len(paths)
+    n_train = int(n * SPLIT["train"])
+    n_val = int(n * SPLIT["val"])
 
-def add_task(tasks):
-    text = input("Task description:").strip()
-    if not text:
-        print("Empty task, skipped.")
-        return
-    tasks.append({
-        "text": text,
-        "done": False,
-        "created":
-    datetime.now().strftime("%Y-%m-%d %H:" \
-    "%M"),
-    })
-    save_tasks(tasks)
-    print("Added.")
+    buckets = {
+        "train": paths[:n_train],
+        "val": paths[n_train:n_train + n_val],
+        "test": paths[n_train + n_val:],
+    }
 
-
-def list_tasks(tasks):
-    if not tasks:
-        print("No tasks yet.")
-        return
-    for i, t in enumerate(tasks, 1):
-        status = "x" if t["done"] else " "
-        print(f"[{status}] {i}. {t['text']} (added {t['created']})")
-
-
-def complete_task(tasks):
-    list_tasks(tasks)
-    if not tasks:
-        return
-    try:
-        idx = int(input("Task number to mark done: ")) - 1
-        tasks[idx]["done"] = True
-        save_tasks(tasks)
-        print("Marked done.")
-    except (ValueError, IndexError):
-        print("Invalid task number.")
-
-
-def delete_task(tasks):
-    list_tasks(tasks)
-    if not tasks:
-        return
-    try:
-        idx = int(input("Task number to delete:")) - 1
-        removed = tasks.pop(idx)
-        save_tasks(tasks)
-        print(f"Deleted: {removed['text']}")
-    except (ValueError, IndexError):
-        print("Invalid task number.")
-
-#-------------Main Menu------------------
+    for split_name, file_list in buckets.items():
+        out_dir = os.path.join(split_name, class_name)
+        os.makedirs(out_dir, exist_ok=True)
+        for i, src_path in enumerate(file_list):
+            ext = os.path.splitext(src_path)[1]
+            dst_path = os.path.join(out_dir, f"{class_name}_{i:05d}{ext}")
+            shutil.copyfile(src_path, dst_path)
+        print(f"{class_name} -> {split_name}: {len(file_list)} images")
 
 def main():
-    tasks = load_tasks()
+    if not os.path.isdir(SIDEWALK_SRC):
+        raise SystemExit(f"ERROR: '{SIDEWALK_SRC}' folder not found. Run this script from data/sidewalks/")
+    if not os.path.isdir(NOT_SIDEWALK_SRC):
+        raise SystemExit(f"ERROR: '{NOT_SIDEWALK_SRC}' folder not found. Run this script from data/sidewalks/")
 
-    menu = """
-=== Personal Assistant === 
-1. Add Task
-2. List tasks
-3. Mark task done
-4. Delete task
-5. Quit
-"""
-    while True:
-        print(menu)
-        choice = input("Choose an option:").strip()
+    sidewalk_images = find_images(SIDEWALK_SRC)
+    not_sidewalk_images = find_images(NOT_SIDEWALK_SRC)
 
-        if choice == "1":
-            add_task(tasks)
-        elif choice == "2":
-            list_tasks(tasks)
-        elif choice == "3":
-            complete_task(tasks)
-        elif choice == "4":
-            delete_task(tasks)
-        elif choice == "5":
-            print("Goodbye!")
-        break
-    else:
-        print("Invalid choice, try again.")
+    print(f"Found {len(sidewalk_images)} sidewalk images")
+    print(f"Found {len(not_sidewalk_images)} not_sidewalk images")
 
+    if len(sidewalk_images) == 0 or len(not_sidewalk_images) == 0:
+        raise SystemExit("ERROR: one of the source folders has no images. Check paths/extensions.")
+
+    split_and_copy(sidewalk_images, "sidewalk")
+    split_and_copy(not_sidewalk_images, "not_sidewalk")
+
+    with open("labels.txt", "w") as f:
+        f.write("sidewalk\nnot_sidewalk\n")
+
+    print("\nDone. Folder structure created: train/ val/ test/ and labels.txt written.")
 
 if __name__ == "__main__":
- main()
+    main()
